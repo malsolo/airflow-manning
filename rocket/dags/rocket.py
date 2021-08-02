@@ -11,6 +11,7 @@ from airflow.utils.dates import days_ago
 from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator, task
 
+from datetime import datetime
 
 def _get_pictures():
     # Ensure directory exists 
@@ -36,8 +37,8 @@ def _get_pictures():
 
 with DAG(
     'rocket',
-    start_date=days_ago(14),
-    schedule_interval=None,
+    start_date=days_ago(1),
+    schedule_interval="@daily",
 ) as dag:
 
     download_launches = BashOperator(
