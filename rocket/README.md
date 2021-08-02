@@ -97,6 +97,31 @@ $ ./airflow.sh bash
 $ ./airflow.sh python
 ```
 
+**Note:** docker-compose.yaml modified for not loading examples.
 
+Go to localhost:8080, airflow/airflow, run the dag, and then, login into a worker node to see the download images:
 
+```
+$ docker ps        CONTAINER ID   IMAGE                  COMMAND                  CREATED             STATUS                    PORTS                                                 NAMES
+e4259cca7d0c   apache/airflow:2.1.2   "/usr/bin/dumb-init …"   6 minutes ago       Up 6 minutes (healthy)    0.0.0.0:5555->5555/tcp, :::5555->5555/tcp, 8080/tcp   rocket_flower_1
+8981bfbe18c9   apache/airflow:2.1.2   "/usr/bin/dumb-init …"   6 minutes ago       Up 6 minutes (healthy)    8080/tcp                                              rocket_airflow-scheduler_1
+cb035299eea7   apache/airflow:2.1.2   "/usr/bin/dumb-init …"   6 minutes ago       Up 6 minutes (healthy)    0.0.0.0:8080->8080/tcp, :::8080->8080/tcp             rocket_airflow-webserver_1
+3d8e8b93a85d   apache/airflow:2.1.2   "/usr/bin/dumb-init …"   6 minutes ago       Up 6 minutes (healthy)    8080/tcp                                              rocket_airflow-worker_1
+d6fc2cc1b708   postgres:13            "docker-entrypoint.s…"   About an hour ago   Up 57 minutes (healthy)   5432/tcp                                              rocket_postgres_1
+6450afd6e6bd   redis:latest           "docker-entrypoint.s…"   About an hour ago   Up 57 minutes (healthy)   0.0.0.0:6379->6379/tcp, :::6379->6379/tcp             rocket_redis_1
+
+$ ❯ docker exec -it 3d8e8b93a85d /bin/bash
+default@3d8e8b93a85d:/opt/airflow$ ls /tmp/images/
+antares2520230252b_image_20191102024633.jpeg
+atlas2520v2520n22_image_20190224012241.jpeg
+falcon2520925_image_20210619160237.png
+falcon2520925_image_20210619160353.png
+gslv2520mk2520ii_image_20190825171642.jpg
+hyperbola-1_image_20190724014013.jpg
+long2520march25203_image_20190224025008.jpeg
+soyuz25202.1b_image_20210520085931.jpeg
+soyuz_image_20190222031122.jpeg
+vega_image_20201111143622.jpeg
+default@3d8e8b93a85d:/opt/airflow$ 
+```
 
