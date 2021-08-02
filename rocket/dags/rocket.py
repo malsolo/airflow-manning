@@ -37,8 +37,8 @@ def _get_pictures():
 
 with DAG(
     'rocket',
-    start_date=days_ago(1),
-    schedule_interval="@daily",
+    start_date=datetime(2021, 8, 2),
+    schedule_interval="*/5 16 * * *",
 ) as dag:
 
     download_launches = BashOperator(
