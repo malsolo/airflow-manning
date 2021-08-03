@@ -372,5 +372,50 @@ airflow-webserver-69df447c6-k5rjf      0/1     Init:ImagePullBackOff   0        
 
 ```
 
+Let's use Docker Hub
 
+```
+$ docker tag rocket-airflow:1.0.2 jbbarquero/rocket-airflow:1.0.2
+
+$ docker login
+Login with your Docker ID to push and pull images from Docker Hub. If you don't have a Docker ID, head over to https://hub.docker.com to create one.
+Username: jbbarquero
+Password:
+Login Succeeded
+
+$ docker push jbbarquero/rocket-airflow:1.0.2
+The push refers to repository [docker.io/jbbarquero/rocket-airflow]
+2ff6a12f8429: Pushed
+d0329f3a8218: Mounted from apache/airflow
+8a1ee0b9c1a2: Mounted from apache/airflow
+421a5750454c: Mounted from apache/airflow
+82be8db704e0: Mounted from apache/airflow
+55e5ab5de633: Mounted from apache/airflow
+303097a6ca10: Mounted from apache/airflow
+15b0d10c3e30: Mounted from apache/airflow
+089401d34488: Mounted from apache/airflow
+7e9299fb1873: Mounted from apache/airflow
+7793b6384298: Mounted from apache/airflow
+df49f5a538b8: Mounted from apache/airflow
+f95d9038830c: Mounted from apache/airflow
+f9ef7f1bcb19: Mounted from apache/airflow
+02c055ef67f5: Mounted from apache/airflow
+1.0.2: digest: sha256:7e767c6a1b7105f2ec9fd85318ab08e9e50eeeb90db514bcf864541c6fe2d6d5 size: 3468
+```
+
+Available at https://hub.docker.com/repository/docker/jbbarquero/rocket-airflow
+
+Oooooor, better use the appropriate docker name and tag in the values yaml file :'(
+
+```
+$ helm install -f helm_airflow_values.yml airflow apache-airflow/airflow --namespace airflow
+```
+
+Now it works, when the DAG runs, it creates a pod per task.
+
+Next issue is to create a persistent volume.
+
+#### Kubernetes, store logs in a persistent volume
+
+TODO
 
