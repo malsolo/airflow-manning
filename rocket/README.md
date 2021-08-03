@@ -314,4 +314,28 @@ $ helm show values apache-airflow/airflow > helm_airflow_values.yml
 
 Then, customize values as explained at https://airflow.apache.org/docs/helm-chart/stable/parameters-ref.html#images
 
+After changing the values, let's deploy again the helm chart:
+
+```
+$ helm upgrade --install -f helm_airflow_values.yml \
+  airflow apache-airflow/airflow \
+  --namespace airflow
+
+$ helm list -n airflow
+NAME   	NAMESPACE	REVISION	UPDATED                              	STATUS  	CHART        	APP VERSION
+airflow	airflow  	5       	2021-08-03 10:42:07.505862 +0200 CEST	deployed	airflow-1.1.0	2.1.2
+```
+
+Let's verify the image:
+```
+$ kubectl get po -n airflow
+NAME                                 READY   STATUS    RESTARTS   AGE
+airflow-postgresql-0                 1/1     Running   0          14h
+airflow-scheduler-74576795d9-ht67z   2/2     Running   0          20m
+airflow-statsd-7586f9998-krsk4       1/1     Running   0          14h
+airflow-webserver-69df447c6-k5z8t    1/1     Running   0          20m
+
+$ kubectl get po airflow-webserver-69df447c6-k5z8t -n airflow -o yaml | grep image: | cut -d ":" -f2,3 | sort | uniq
+```
+
 
