@@ -357,4 +357,20 @@ $ helm install airflow apache-airflow/airflow --namespace airflow
 $ helm upgrade --install -f helm_airflow_values.yml airflow apache-airflow/airflow --namespace airflow
 ```
 
+It didn't work:
+
+```
+$ kubectl get po -n airflow
+NAME                                   READY   STATUS                  RESTARTS   AGE
+airflow-postgresql-0                   1/1     Running                 0          57m
+airflow-run-airflow-migrations-7t4s7   0/1     ImagePullBackOff        0          20m
+airflow-scheduler-5bc486d97f-6wvdf     2/2     Running                 0          57m
+airflow-scheduler-74576795d9-c9fml     0/2     Init:ImagePullBackOff   0          55m
+airflow-statsd-7586f9998-s2q7m         1/1     Running                 0          57m
+airflow-webserver-66fd4f75b9-65qjm     1/1     Running                 0          57m
+airflow-webserver-69df447c6-k5rjf      0/1     Init:ImagePullBackOff   0          55m
+
+```
+
+
 
