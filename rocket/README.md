@@ -338,4 +338,23 @@ airflow-webserver-69df447c6-k5z8t    1/1     Running   0          20m
 $ kubectl get po airflow-webserver-69df447c6-k5z8t -n airflow -o yaml | grep image: | cut -d ":" -f2,3 | sort | uniq
 ```
 
+Let's rebuild the image
+```
+$ helm list -n airflow
+NAME   	NAMESPACE	REVISION	UPDATED                              	STATUS  	CHART        	APP VERSION
+airflow	airflow  	5       	2021-08-03 10:42:07.505862 +0200 CEST	deployed	airflow-1.1.0	2.1.2
+
+$ helm uninstall airflow -n airflow
+release "airflow" uninstalled
+
+$ helm list -n airflow
+NAME	NAMESPACE	REVISION	UPDATED	STATUS	CHART	APP VERSION
+
+$ docker build --tag rocket-airflow:1.0.2 .
+
+$ helm install airflow apache-airflow/airflow --namespace airflow
+
+$ helm upgrade --install -f helm_airflow_values.yml airflow apache-airflow/airflow --namespace airflow
+```
+
 
