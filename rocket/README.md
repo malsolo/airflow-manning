@@ -125,3 +125,78 @@ vega_image_20201111143622.jpeg
 default@3d8e8b93a85d:/opt/airflow$ 
 ```
 
+## Kubernetes
+
+TODO: document installation of
+- Kubernetes:
+    - minikube, https://minikube.sigs.k8s.io/docs/start/ and https://kubernetes.io/docs/tasks/tools/install-kubectl-macos/ 
+    - kubectl, https://kubernetes.io/docs/tasks/tools/install-kubectl-macos/#install-with-homebrew-on-macos
+    - TODO: kind, https://kind.sigs.k8s.io/docs/user/quick-start
+- Helm: https://helm.sh/docs/intro/quickstart/
+- Kind: https://kind.sigs.k8s.io/docs/user/quick-start (just brew install kind)
+
+- Helm chart:
+
+https://artifacthub.io/packages/helm/apache-airflow/airflow
+
+Documented at https://airflow.apache.org/docs/helm-chart/stable/index.html
+
+```
+$ kubectl create namespace airflow
+
+$ helm repo add apache-airflow https://airflow.apache.org
+
+$ helm install airflow apache-airflow/airflow --namespace airflow
+NAME: airflow
+LAST DEPLOYED: Mon Aug  2 20:22:31 2021
+NAMESPACE: airflow
+STATUS: deployed
+REVISION: 1
+TEST SUITE: None
+NOTES:
+Thank you for installing Apache Airflow 2.1.2!
+
+Your release is named airflow.
+You can now access your dashboard(s) by executing the following command(s) and visiting the corresponding port at localhost in your browser:
+
+Airflow Webserver:     kubectl port-forward svc/airflow-webserver 8080:8080 --namespace airflow
+Flower dashboard:      kubectl port-forward svc/airflow-flower 5555:5555 --namespace airflow
+Default Webserver (Airflow UI) Login credentials:
+    username: admin
+    password: admin
+Default Postgres connection credentials:
+    username: postgres
+    password: postgres
+    port: 5432
+
+You can get Fernet Key value by running the following:
+
+    echo Fernet Key: $(kubectl get secret --namespace airflow airflow-fernet-key -o jsonpath="{.data.fernet-key}" | base64 --decode)
+
+$ helm list --namespace airflow
+NAME   	NAMESPACE	REVISION	UPDATED                              	STATUS  	CHART        	APP VERSION
+airflow	airflow  	1       	2021-08-02 20:22:31.270734 +0200 CEST	deployed	airflow-1.1.0	2.1.2
+
+```
+
+Now, for accesing the application, we have to do a port forward:
+
+```
+$ kubectl get svc -n airflow
+NAME                          TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)             AGE
+airflow-flower                ClusterIP   10.105.221.230   <none>        5555/TCP            10h
+airflow-postgresql            ClusterIP   10.104.11.136    <none>        5432/TCP            10h
+airflow-postgresql-headless   ClusterIP   None             <none>        5432/TCP            10h
+airflow-redis                 ClusterIP   10.98.137.233    <none>        6379/TCP            10h
+airflow-statsd                ClusterIP   10.109.76.135    <none>        9125/UDP,9102/TCP   10h
+airflow-webserver             ClusterIP   10.103.232.238   <none>        8080/TCP            10h
+airflow-worker                ClusterIP   None             <none>        8793/TCP            10h
+
+$ kubectl port-forward svc/airflow-webserver 8080:8080 --namespace airflow
+Forwarding from 127.0.0.1:8080 -> 8080
+Forwarding from [::1]:8080 -> 8080
+
+```
+
+😄
+
