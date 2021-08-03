@@ -305,3 +305,13 @@ $ kubectl port-forward svc/airflow-webserver 8080:8080 --namespace airflow
 
 $ eval $(minikube docker-env -u)
 ```
+
+#### Kubernetes executor
+
+```
+$ helm show values apache-airflow/airflow > helm_airflow_values.yml
+```
+
+Then, customize values as explained at https://airflow.apache.org/docs/helm-chart/stable/parameters-ref.html#images
+
+
